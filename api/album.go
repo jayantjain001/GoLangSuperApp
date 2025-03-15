@@ -1,8 +1,9 @@
 package api
 
 import (
+	"encoding/json"
 	"example/GoApp/model"
-	"fmt"
+	"log"
 	"net/http"
 	// "github.com/gin-gonic/gin"
 )
@@ -15,15 +16,9 @@ func GetAlbums(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprint(w, `{"message": "Hello, world!"}`, model.Albums)
+
+	log.Println(" album get api called ...")
+	json.NewEncoder(w).Encode(model.Albums)
+	//fmt.Fprint(w, `{"message": "Hello, world!"}`, model.Albums)
 
 }
-
-func AddAllRoutesToRouter() {
-
-}
-
-// getAlbums responds with the list of all albums as JSON. via gin
-//func GetAlbums(c *gin.Context) {
-//	c.IndentedJSON(http.StatusOK, model.Albums) // using imported model class Albums
-//}

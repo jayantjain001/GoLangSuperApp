@@ -3,6 +3,7 @@ package database
 import (
 	"example/GoApp/config"
 	"fmt"
+	"log"
 	"time"
 
 	"gorm.io/driver/mysql"
@@ -25,6 +26,8 @@ func NewDB(config *config.DatabaseConfig) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	log.Println(" Database connection established ...")
 
 	sqlDB, err := db.DB()
 

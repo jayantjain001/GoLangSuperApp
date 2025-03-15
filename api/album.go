@@ -1,7 +1,7 @@
 package api
 
 import (
-	"example/GoApp/pkg/model"
+	"example/GoApp/model"
 	"fmt"
 	"net/http"
 	// "github.com/gin-gonic/gin"

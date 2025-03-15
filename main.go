@@ -1,7 +1,7 @@
 package main
 
 import (
-	"example/GoApp/pkg/router"
+	"example/GoApp/router"
 	"fmt"
 	"runtime"
 )

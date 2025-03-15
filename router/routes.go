@@ -1,7 +1,7 @@
 package router
 
 import (
-	api "example/GoApp/pkg"
+	api "example/GoApp/api"
 	"fmt"
 	"net/http"
 	//"github.com/gin-gonic/gin"

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"example/GoApp/config"
 	"example/GoApp/router"
 	"fmt"
 	"runtime"
@@ -9,6 +10,8 @@ import (
 func main() {
 	fmt.Println("Starting Go App !")
 	fmt.Println(" machine cores : ", runtime.NumCPU())
+
+	config.LoadDatabaseConfig() // load database config
 
 	router.AddAllAPIRoutes() //  registering all apis
 

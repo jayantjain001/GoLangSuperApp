@@ -1,40 +1,36 @@
 package database
 
 import (
+	"example/GoApp/config"
 	"fmt"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
 	"time"
 
-	"example/GoApp/model"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
-// DatabaseConfig holds the MySQL database configuration.
-type DatabaseConfig struct {
-	Username string
-	Password string
-	Host     string
-	Port     string
-	Database string
-}
+func NewDB(config *config.DatabaseConfig) (*gorm.DB, error) {
 
-// Database holds the GORM database instance.
-type Database struct {
-	*gorm.DB
-}
-
-// NewDatabase creates a new database connection.
-func NewDatabase(config DatabaseConfig) (*Database, error) {
+	// print database config
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		config.Username, config.Password, config.Host, config.Port, config.Database)
+		config.User,
+		config.Password,
+		config.Host,
+		config.Port,
+		config.Name,
+	)
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{}) // open connection
 
 	if err != nil {
 		return nil, err
 	}
 
 	sqlDB, err := db.DB()
+
+	if err != nil {
+		return nil, err
+	}
 
 	// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
 	sqlDB.SetMaxIdleConns(10)
@@ -45,23 +41,5 @@ func NewDatabase(config DatabaseConfig) (*Database, error) {
 	// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
-	return &Database{DB: db}, nil
-}
-
-// GetUserByID retrieves a user by ID.
-func (db *Database) GetUserByID(id uint) (*model.User, error) {
-	var user model.User
-	result := db.First(&user, id)
-
-	if result.Error != nil {
-		return nil, result.Error
-	}
-
-	return &user, nil
-}
-
-// CreateUser creates a new user.
-func (db *Database) CreateUser(user *model.User) error {
-	result := db.Create(user)
-	return result.Error
+	return db, nil
 }

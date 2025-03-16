@@ -3,14 +3,11 @@ package main
 import (
 	"example/GoApp/config"
 	"example/GoApp/database"
-	"net/http"
-
-	//"example/GoApp/repository"
 	"example/GoApp/router"
-	///	"example/GoApp/service"
 
 	"fmt"
 	"log"
+	"net/http"
 	"runtime"
 )
 
@@ -30,20 +27,12 @@ func main() {
 		log.Fatal("Database connection failed:", err)
 	}
 
-	//	config.LoadDatabaseConfig()
-
 	// Register routes
+	router.AddAlbumAPIRoutes()  //  registering all apis to router
+	router.AddUserAPIRoutes(db) // registering all user apis to router
 
-	router.AddAllAlbumAPIRoutes() //  registering all apis to router
-	router.AddUserAPIRoutes(db)   // registering all user apis to router
-
-	// Start server
+	// Start http server
 	log.Println("Server starting on port 8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe("localhost:8080", nil))
 
 }
-
-//gin.SetMode(gin.ReleaseMode)         // running release mode
-///router := gin.Default()              // get gin router
-//router.GET("/albums", api.GetAlbums) // set api and its caller method via gin
-//router.Run("localhost:8080")         // run gin router
